@@ -3,8 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 import xgboost as xgb
-from sklearn.metrics import auc, precision_recall_curve, f1_score
-from Models.Utils import stratified_group_k_fold, get_distribution, get_distribution_scalars
+from sklearn.metrics import auc, precision_recall_curve
+from Utils.DataUtils import stratified_group_k_fold, get_distribution, get_distribution_scalars
 from Models.Metrics import performance_metrics
 
 class XGBoostClassifier():

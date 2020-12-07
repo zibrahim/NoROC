@@ -7,11 +7,6 @@
 		"ordering": "Hour",
 		"sequence_length": 31,
 		"batch_size": 48,
-		"static_columns": [
-             "Age",
-             "weight",
-			"comorbidity"
-		],
 
 		"dynamic_columns": [
 			"ALT" ,
@@ -46,17 +41,10 @@
 			"Urea" ,
 			"WBC"
 		]
-						,
-		"classification_outcome": [
-			"Mortality30Days"
-		],
-		"classification_target": [
-			"Mortality"
-		],
-		"classification_label": {
-			"Mortality30Days":"30D MOR"
-            
-        }
+		,
+		"classification_outcome": "Mortality30Days",
+		"classification_target": "Mortality",
+		"classification_label": {"Mortality30Days":"30D MOR"}
 	},
 	"training": {
 		"folds": 10,

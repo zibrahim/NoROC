@@ -7,7 +7,7 @@ import json
 from PythonDataProcessing.Processing.CleanTimeSeries import remove_alpha, remove_nacolumns
 def main():
 
-    configs = json.load(open('PythonDataProcessing/Configuration.json', 'r'))
+    configs = json.load(open('Utils/Configuration.json', 'r'))
     data_path = configs['paths']['data_path']
 
     time_series = pd.read_csv(data_path+"OneDaySeriesMortality.csv")

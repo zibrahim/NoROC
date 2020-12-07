@@ -1,14 +1,14 @@
 import pandas as pd
 from PythonDataProcessing.Cohort.Cohort import Cohort
 from PythonDataProcessing.Cohort.Patient import Patient
-from PythonDataProcessing.Processing.Utils import convert_to_datetime, getDay
+from PythonDataProcessing.Processing.Utils import convert_to_datetime
 from PythonDataProcessing.Processing.Clean import clean_cohort
 from PythonDataProcessing.Processing.Serialisation import jsonDump
 
 import json
 
 def main():
-    configs = json.load(open('PythonDataProcessing/Configuration.json', 'r'))
+    configs = json.load(open('Utils/Configuration.json', 'r'))
     data_path = configs['paths']['data_path']
 
     vitals= pd.read_csv(data_path+"TimeSeries.csv")

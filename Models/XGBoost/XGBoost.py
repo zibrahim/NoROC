@@ -9,7 +9,7 @@ from sklearn.metrics import auc, precision_recall_curve
 from sklearn.model_selection import RepeatedStratifiedKFold, cross_validate
 
 from Models.Metrics import performance_metrics
-from Models.Utils import get_distribution, get_distribution_scalars
+from Utils.DataUtils import get_distribution_scalars
 
 class XGBoostClassifier():
     def __init__(self, X, y,outcome, grouping, saved_model = None):

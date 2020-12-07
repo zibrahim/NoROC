@@ -3,7 +3,7 @@ from sklearn.metrics import precision_recall_curve, auc
 from sklearn.model_selection import RepeatedStratifiedKFold, cross_validate
 
 from Models.Metrics import performance_metrics
-from Models.Utils import get_distribution
+from Utils.DataUtils import get_distribution
 import json
 import pandas as pd
 import numpy as np

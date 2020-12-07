@@ -3,7 +3,7 @@ import pandas as pd
 
 from PythonDataProcessing.Processing.Utils import getDay
 
-configs = json.load(open('PythonDataProcessing/Configuration.json', 'r'))
+configs = json.load(open('Utils/Configuration.json', 'r'))
 data_path = configs['paths']['data_path']
 
 #vitals = pd.read_csv(data_path + "TimeSeries.csv")
