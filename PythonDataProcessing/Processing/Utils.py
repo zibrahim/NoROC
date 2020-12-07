@@ -10,7 +10,7 @@ def convert_to_datetime(d):
     if isinstance(d, str) and d == '' :
         return ''
     elif isinstance(d, str):
-        return datetime.strptime(d, '%Y-%m-%dT%H:%M:%S')
+        return datetime.strptime(d, '%d/%m/%y %H:%M')
     elif isinstance(d, datetime):
         return d
     else:

@@ -48,7 +48,6 @@ def jsonRead(fileName):
         cohort = Cohort(cohort_dict['cohort'])
 
         for p in patients:
-            print(" IN Json Read. Reading patient: ", p['PatientID'])
             patient = Patient(p['PatientID'], p['los'], p['Gender'], p['Age'],
                               p["Mortality30Days"])
 
@@ -68,12 +67,9 @@ def jsonRead(fileName):
             patient.addObservations(observations)
             cohort.addIndividual(patient, p['PatientID'])
 
-    print("finished json read")
     return cohort
 
 def makeTimeSeriesOneDay ( cohort, name ) :
-
-    print(" processing makeTimeSEriesOneDay")
     configs = json.load(open('PythonDataProcessing/Configuration.json', 'r'))
     data_path = configs['paths']['data_path']
 
@@ -83,7 +79,6 @@ def makeTimeSeriesOneDay ( cohort, name ) :
     cohort.clean()
 
     for ind in cohort.individuals :
-        print(" processing patient: ", ind.Patient_id)
         observation_list = getattr(ind, 'observations')
 
         observation_list = [x for x in observation_list if x.Name in column_names]

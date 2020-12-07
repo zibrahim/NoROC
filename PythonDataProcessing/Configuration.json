@@ -1,0 +1,68 @@
+{
+	"paths": {
+		"data_path" : "/Users/babylon/Documents/NoROC/Data/"
+	},
+	"data": {
+		"grouping": "PatientID",
+		"ordering": "Hour",
+		"sequence_length": 31,
+		"batch_size": 48,
+		"static_columns": [
+             "Age",
+             "weight",
+			"comorbidity"
+		],
+
+		"dynamic_columns": [
+			"ALT" ,
+			"AST" ,
+			"Albumin" ,
+			"Bilirubin" ,
+			"CaO2" ,
+			"CentralvenousO2Saturation" ,
+			"Centralvenouspressure" ,
+			"Creatinine" ,
+			"Creactiveprotein" ,
+			"DiasBP1" ,
+			"Fibrinogen" ,
+			"Fio2" ,
+			"Haemoglobin" ,
+			"Heartrate" ,
+			"INR" ,
+			"Lactatedehydrogenase" ,
+			"Lymphocytes" ,
+			"MeanBP1" ,
+			"Neutrophils" ,
+			"PTT" ,
+			"PaCO2" ,
+			"PaO2" ,
+			"PeripheralO2Saturation" ,
+			"Platelets" ,
+			"SysBP1" ,
+			"PvCO2" ,
+			"Sao2" ,
+			"SpontaneousResRate" ,
+			"Temperature" ,
+			"Urea" ,
+			"WBC"
+		]
+						,
+		"classification_outcome": [
+			"Mortality30Days"
+		],
+		"classification_target": [
+			"Mortality"
+		],
+		"classification_label": {
+			"Mortality30Days":"30D MOR"
+            
+        }
+	},
+	"training": {
+		"folds": 10,
+		"epochs": 400
+	},
+	"model": {
+		"name": "mortality"
+	}
+}
