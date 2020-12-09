@@ -43,7 +43,9 @@ def main () :
     num_positive_patients = len(list(positive_patients))
     print("number of positive patients: ", num_positive_patients)
 
+    ##ZI Change this in the real thing
     dataset_size = num_positive_patients*2
+    #dataset_size = num_positive_patients/2
     prevalence_rates = [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5]
 
     for p in prevalence_rates:
@@ -59,5 +61,7 @@ def main () :
 
         rate_df = positive_df.append(negative_df, ignore_index=True)
         rate_df.to_csv(timeseries_path+"Training/"+"TimeSeries"+str(p)+".csv", index=False)
+
+        
 if __name__ == '__main__' :
     main()
