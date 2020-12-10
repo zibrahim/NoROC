@@ -2,7 +2,7 @@ import json
 
 from random import sample
 
-from Utils.DataUtils import get_distribution_scalars
+from Utils.DataUtils import get_distribution_scalars, scale, impute
 import pandas as pd
 
 
@@ -27,7 +27,7 @@ def main () :
     outcome = configs['data']['classification_outcome']
     timeseries_path = configs['paths']['data_path']
 
-    timeseries = pd.read_csv(timeseries_path+"AggrOneDaySeries.csv")
+    timeseries = pd.read_csv(timeseries_path+"PneumoniaTimeSeriesAggregated.csv")
 
     y = [int(x) for x in timeseries[outcome].values]
     print("Outcome Distribution: ", get_distribution_scalars(y))
@@ -60,8 +60,13 @@ def main () :
         negative_df = timeseries.loc[timeseries[grouping].isin(negative_samples)]
 
         rate_df = positive_df.append(negative_df, ignore_index=True)
-        rate_df.to_csv(timeseries_path+"Training/"+"TimeSeries"+str(p)+".csv", index=False)
+        ids = rate_df[grouping]
+        outcomes = rate_df[outcome]
+        rate_df = scale(rate_df, dynamic_features)
+        rate_df = impute(rate_df,dynamic_features)
+        rate_df[outcome] = outcomes
+        rate_df[grouping] = ids
+        rate_df.to_csv(timeseries_path+"Training/"+"PneumoniaTimeSeries"+str(p)+".csv", index=False)
 
-        
 if __name__ == '__main__' :
     main()

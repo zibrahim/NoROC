@@ -3,7 +3,7 @@ from sktime.transformers.series_as_features.compose import ColumnConcatenator
 from sklearn.pipeline import Pipeline
 
 from Prediction.Metrics import performance_metrics
-from Utils.DataUtils import scale, impute, stratified_group_k_fold
+from Utils.DataUtils import scale, impute, stratified_group_k_fold, get_distribution
 import pandas as pd
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
@@ -42,8 +42,8 @@ def main () :
         y = np.array([int(x) for x in timeseries[outcome].values])
         groups = np.array(timeseries[grouping])
 
-        timeseries = scale(timeseries, dynamic_features)
-        timeseries = impute(timeseries,dynamic_features)
+        #timeseries = scale(timeseries, dynamic_features)
+        #timeseries = impute(timeseries,dynamic_features)
         X = timeseries[dynamic_features]
         X.reset_index()
         print(" X shape: ", X.shape)
@@ -63,8 +63,11 @@ def main () :
             training_y_ind = [x for x in training_ind if x%48 ==0]
             testing_y_ind = [x for x in testing_ind if x%48 ==0]
 
+
             training_groups, testing_groups = groups[training_ind], groups[testing_ind]
             y_train, y_test = y[training_y_ind], y[testing_y_ind]
+            print(" ytrain distribution: ", get_distribution(y_train))
+            print("ytest distribution: ", get_distribution(y_test))
 
             X_train, X_test = (X.iloc[training_ind]).to_numpy(), (X.iloc[testing_ind]).to_numpy()
             X_train = X_train.reshape(-1,48,31)

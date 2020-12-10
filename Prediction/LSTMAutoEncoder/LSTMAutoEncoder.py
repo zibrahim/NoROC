@@ -22,21 +22,20 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 
 class LSTMAutoEncoder():
-    def __init__(self, name, outcome, timesteps, n_features,saved_model = None):
+    def __init__(self, name, outcome, p, timesteps, n_features,saved_model = None):
         if saved_model == None:
             self.lstm_autoencoder = Sequential(name = name)
         # Encoder
-            self.lstm_autoencoder.add(LSTM(60, activation='relu', input_shape=(timesteps, n_features), return_sequences=True))
+            self.lstm_autoencoder.add(LSTM(30, activation='relu', input_shape=(timesteps, n_features), return_sequences=True))
             #self.lstm_autoencoder.add(LSTM(16, activation='relu', input_shape=(timesteps, n_features), return_sequences=True))
-            self.lstm_autoencoder.add(LSTM(30, activation='relu', return_sequences=False))
+            self.lstm_autoencoder.add(LSTM(16, activation='relu', return_sequences=False))
             self.lstm_autoencoder.add(Dropout(0.5))
-
             self.lstm_autoencoder.add(RepeatVector(timesteps))
         # Decoder
             #self.lstm_autoencoder.add(LSTM(8, activation='relu', return_sequences=True))
-            self.lstm_autoencoder.add(LSTM(30, activation='relu', return_sequences=True))
+            self.lstm_autoencoder.add(LSTM(16, activation='relu', return_sequences=True))
             self.lstm_autoencoder.add(Dropout(0.5))
-            self.lstm_autoencoder.add(LSTM(60, activation='relu', return_sequences=True))
+            self.lstm_autoencoder.add(LSTM(30, activation='relu', return_sequences=True))
 
             self.lstm_autoencoder.add(TimeDistributed(Dense(n_features)))
             lr = 0.001
@@ -50,8 +49,8 @@ class LSTMAutoEncoder():
             ##ZI: Fix how do I initialise history if model loaded from disk?
 
         self.outcome = outcome
-
-        configs = json.load(open('Configuration.json', 'r'))
+        self.p = p
+        configs = json.load(open('Utils/Configuration.json', 'r'))
         self.output_path = configs['paths']['autoencoder_output_path']
 
     def summary( self ):
@@ -61,13 +60,13 @@ class LSTMAutoEncoder():
         self.lstm_autoencoder.save(filename)
         print('>Saved %s' % filename)
 
-    def fit(self, trainx, trainy,e, b,val_x, val_y,v):
-        configs = json.load(open('Configuration.json', 'r'))
+    def fit(self, trainx, trainy,e, b,val_x, val_y,v, p):
+        configs = json.load(open('Utils/Configuration.json', 'r'))
         autoencoder_models_path = configs['paths']['autoencoder_models_path']
         es = EarlyStopping(monitor='val_loss', mode='min',
                            verbose=1, patience=50, restore_best_weights=True)
 
-        filename = autoencoder_models_path + configs['model']['name'] + self.outcome + '.h5'
+        filename = autoencoder_models_path + configs['model']['name'] + self.p + '.h5'
 
         mc = ModelCheckpoint(filename, monitor='val_loss', save_best_only=True, verbose=1)
 
@@ -88,7 +87,7 @@ class LSTMAutoEncoder():
         plt.title('Model loss')
         plt.ylabel('Loss')
         plt.xlabel('Epoch')
-        plt.savefig(self.output_path +self.outcome+self.outcome+"LossOverEpochs.pdf", bbox_inches='tight')
+        plt.savefig(self.output_path +self.outcome+self.p+"LossOverEpochs.pdf", bbox_inches='tight')
 
     def predict( self , xval):
         predictions = self.lstm_autoencoder.predict(xval)
@@ -105,12 +104,12 @@ class LSTMAutoEncoder():
         return pred_y, best_threshold, precision_rt, recall_rt
 
 
-    def output_performance(self, true_class,pred_y):
+    def output_performance(self, true_class,pred_y,prediction_probabilities):
 
         perf_df = pd.DataFrame()
-        perf_dict = performance_metrics(true_class, pred_y )
+        perf_dict = performance_metrics(true_class, pred_y ,prediction_probabilities)
         perf_df = perf_df.append(perf_dict, ignore_index=True)
-        perf_df.to_csv(self.output_path +"performancemetrics"+self.outcome+".csv", index=False)
+        perf_df.to_csv(self.output_path +"performancemetrics"+self.outcome+self.p+".csv", index=False)
 
     def plot_reconstruction_error(self, error_df, best_threshold):
         plt.figure(figsize=(10, 10))
@@ -126,7 +125,7 @@ class LSTMAutoEncoder():
         plt.title("Reconstruction error for different classes")
         plt.ylabel("Reconstruction error")
         plt.xlabel("Data point index")
-        plt.savefig(self.output_path  + self.outcome + "Reconstructionerror.pdf", bbox_inches='tight')
+        plt.savefig(self.output_path  + self.outcome +self.p+ "Reconstructionerror.pdf", bbox_inches='tight')
 
 
     def plot_roc(self, error_df):
@@ -144,7 +143,7 @@ class LSTMAutoEncoder():
         plt.title('Receiver operating characteristic curve (ROC)')
         plt.ylabel('True Positive Rate')
         plt.xlabel('False Positive Rate')
-        plt.savefig(self.output_path + self.outcome + "roc.pdf", bbox_inches='tight')
+        plt.savefig(self.output_path + self.outcome + self.p+"roc.pdf", bbox_inches='tight')
 
     def plot_pr( self, precision, recall ):
 
@@ -159,4 +158,4 @@ class LSTMAutoEncoder():
         plt.title('Precision Recall Curive')
         plt.ylabel('Precision')
         plt.xlabel('Recall')
-        plt.savefig(self.output_path+self.outcome+"precision_recall_auc.pdf", bbox_inches='tight')
+        plt.savefig(self.output_path+self.outcome+self.p+"precision_recall_auc.pdf", bbox_inches='tight')

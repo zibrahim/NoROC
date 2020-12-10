@@ -1,6 +1,9 @@
 {
 	"paths": {
-		"data_path" : "/Users/babylon/Documents/NoROC/Data/"
+		"data_path" : "/Users/babylon/Documents/NoROC/Data/",
+		"autoencoder_models_path": "/Users/babylon/Documents/NoROC/Data/Models/",
+		"autoencoder_output_path": "/Users/babylon/Documents/NoROC/Data/Output/AutoEncoder/",
+		"classification_report_path": "/Users/babylon/Documents/NoROC/Data/Output/ClassificationReport/"
 	},
 	"data": {
 		"grouping": "PatientID",
@@ -48,9 +51,9 @@
 	},
 	"training": {
 		"folds": 10,
-		"epochs": 400
+		"epochs": 100
 	},
 	"model": {
-		"name": "mortality"
+		"name": "Pneumonia"
 	}
 }

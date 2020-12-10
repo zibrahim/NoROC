@@ -3,10 +3,9 @@ import random
 import pandas as pd
 from collections import Counter, defaultdict
 
-def process_data(dynamic_series, full_series, outcome, grouping, lookback,
+def process_data(dynamic_series, outcome, grouping, lookback,
                  training_ind, testing_ind):
 
-    dynamic_series.insert(len(dynamic_series.columns), outcome, full_series[outcome])
     dynamic_series[outcome] = dynamic_series[outcome].astype(int)
 
     X_cols = (dynamic_series.columns).tolist()
